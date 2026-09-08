@@ -1,0 +1,14 @@
+{
+  "name": "@split/renderer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "test": "vp test run --config ../../vite.config.ts --project split-renderer"
+  },
+  "devDependencies": {
+    "@split/contracts": "workspace:*",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vite-plus": "0.3.0"
+  }
+}

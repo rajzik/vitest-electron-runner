@@ -9,6 +9,8 @@ const sendToHost = process.send?.bind(process);
 if (!sendToHost) throw new Error('Electron bootstrap requires a parent IPC channel');
 
 app.setPath('userData', userData);
+const showWindow = process.env.VITEST_ELECTRON_SHOW_WINDOW === '1';
+if (!showWindow && process.platform === 'darwin') app.setActivationPolicy('accessory');
 const pending: unknown[] = [];
 const enqueue = (message: unknown) => pending.push(message);
 let stopping = false;
@@ -24,8 +26,11 @@ void app
   .then(async () => {
     if (process.env.VITEST_ELECTRON_PROCESS === 'renderer') {
       const window = new BrowserWindow({
-        show: false,
+        show: showWindow,
+        focusable: showWindow,
+        skipTaskbar: !showWindow,
         webPreferences: {
+          backgroundThrottling: showWindow,
           nodeIntegration: true,
           contextIsolation: false,
           sandbox: false,

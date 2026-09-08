@@ -1,0 +1,7 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "include": ["src", "tests", "vite.config.ts", "../renderer/src/env.d.ts"],
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"]
+  }
+}

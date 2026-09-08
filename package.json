@@ -7,7 +7,7 @@
     "dev": "vp run -r --parallel dev",
     "check": "vp check",
     "fmt": "vp fmt",
-    "test": "vp run -r test",
+    "test": "pnpm --filter vitest-electron-runner test && vp test run",
     "test:watch": "vp run -r --parallel test:watch"
   },
   "devDependencies": {

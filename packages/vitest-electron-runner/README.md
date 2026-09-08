@@ -85,7 +85,7 @@ test('uses the page DOM and renderer APIs', () => {
 });
 ```
 
-Renderer tests run in a hidden local page with `nodeIntegration: true`,
+Renderer tests run in a local page, hidden by default, with `nodeIntegration: true`,
 `contextIsolation: false`, and `sandbox: false`. The preload, compiled from TypeScript to CommonJS, initializes
 Vitest after the DOM loads. Tests execute in the page's own JavaScript context.
 
@@ -130,7 +130,19 @@ export default defineConfig({
 | Option           | Behavior                                                                                        |
 | ---------------- | ----------------------------------------------------------------------------------------------- |
 | `process`        | Required when passing options: `'main'` or `'renderer'`. Calling `electronPool()` selects main. |
+| `showWindow`     | Defaults to `false`. Set to `true` to show and focus the renderer window for debugging.         |
 | `executablePath` | Optional Electron executable override. Otherwise resolves the application's `electron` package. |
+
+The runner stays out of the macOS Dock by default. Its renderer window is hidden,
+non-focusable, and excluded from the taskbar, while background rendering remains
+active for tests. Enable a visible renderer manually:
+
+```ts
+pool: electronPool({ process: 'renderer', showWindow: true });
+```
+
+Main mode does not create a window. Windows created by your own test code still
+follow their own `BrowserWindow` options; use `show: false` to keep those hidden.
 
 Each file gets a fresh Electron application and temporary user-data directory,
 including on watch reruns. Workers are never reused, even with `isolate: false`.

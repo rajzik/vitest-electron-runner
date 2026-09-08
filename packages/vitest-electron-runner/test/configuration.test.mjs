@@ -5,3 +5,10 @@ import { electronPool } from 'vitest-electron-runner';
 void test('rejects unsupported process modes before launching Electron', () => {
   assert.throws(() => electronPool({ process: 'preload' }), /process must be "main" or "renderer"/);
 });
+
+void test('rejects non-boolean window visibility before launching Electron', () => {
+  assert.throws(
+    () => electronPool({ process: 'renderer', showWindow: 'yes' }),
+    /showWindow must be a boolean/,
+  );
+});

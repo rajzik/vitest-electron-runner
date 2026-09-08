@@ -11,6 +11,7 @@ import type { PoolOptions, PoolRunnerInitializer, PoolWorker, WorkerRequest } fr
 export interface ElectronPoolOptions {
   process: 'main' | 'renderer';
   executablePath?: string;
+  showWindow?: boolean;
 }
 
 export function electronPool(
@@ -18,6 +19,9 @@ export function electronPool(
 ): PoolRunnerInitializer {
   if (options?.process !== 'main' && options?.process !== 'renderer') {
     throw new TypeError('electronPool process must be "main" or "renderer"');
+  }
+  if (options.showWindow !== undefined && typeof options.showWindow !== 'boolean') {
+    throw new TypeError('electronPool showWindow must be a boolean');
   }
   const configuration = { ...options };
   return {
@@ -56,6 +60,7 @@ class ElectronWorker extends EventEmitter implements PoolWorker {
           ...env,
           VITEST_ELECTRON_ENTRY: electronEntry,
           VITEST_ELECTRON_PROCESS: this.options.process,
+          VITEST_ELECTRON_SHOW_WINDOW: this.options.showWindow === true ? '1' : '0',
           VITEST_ELECTRON_USER_DATA: this.userData,
         },
         stdio: ['ignore', 'pipe', 'pipe', 'ipc'],

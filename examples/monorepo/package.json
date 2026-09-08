@@ -1,0 +1,17 @@
+{
+  "name": "@examples/monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "dev": "node scripts/start.mjs --dev",
+    "test": "vp test run",
+    "test:watch": "vp test"
+  },
+  "devDependencies": {
+    "electron": "44.2.0",
+    "playwright": "1.63.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vite-plus": "0.3.0"
+  }
+}

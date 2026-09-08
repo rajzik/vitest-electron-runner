@@ -10,4 +10,12 @@ export default defineConfig({
       typeCheck: true,
     },
   },
+  test: {
+    projects: [
+      'examples/*/vite.config.ts',
+      '!examples/monorepo/vite.config.ts',
+      'examples/monorepo/packages/*/vite.config.ts',
+    ],
+    globalSetup: ['./examples/monorepo/testing/build.ts'],
+  },
 });

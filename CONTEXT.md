@@ -18,9 +18,12 @@ behavior test followed by its implementation, not a batch of speculative tests.
 
 Pin Vitest 5.0.0 because the worker integration API is experimental. Verify with
 Electron 44.2.0. Main tests start after `app.whenReady()`. Renderer tests target a
-local hidden page with Node integration, without context isolation or sandboxing.
+local page hidden by default, with Node integration, without context isolation or sandboxing.
 This is a test environment for trusted code, not a production preload bridge.
 Fresh Electron applications provide file isolation.
 
 The implementation is in `packages/vitest-electron-runner`. Vite Plus builds the
 library; real runtime integration tests explicitly use Vitest 5.0.0.
+
+The pool defaults to hidden renderer windows and no macOS Dock icon. Set
+`showWindow: true` to enable a visible renderer for debugging.
