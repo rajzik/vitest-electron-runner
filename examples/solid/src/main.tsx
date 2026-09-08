@@ -1,0 +1,7 @@
+import { render } from 'solid-js/web';
+import { App } from './App';
+import '../../shared/style.css';
+
+const container = document.getElementById('root');
+if (!container) throw new Error('Missing #root container');
+render(() => <App />, container);

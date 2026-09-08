@@ -10,8 +10,4 @@ export default defineConfig({
       typeCheck: true,
     },
   },
-  test: {
-    projects: ['packages/*'],
-    passWithNoTests: true,
-  },
 });

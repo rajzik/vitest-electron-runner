@@ -1,0 +1,264 @@
+:root {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #2f3437;
+  background: #f7f6f3;
+  font-synthesis: none;
+  line-height: 1.6;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 72px 24px 32px;
+}
+header {
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+.eyebrow {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+h1 {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(44px, 7vw, 72px);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 24px 0;
+}
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+p {
+  margin: 12px 0;
+}
+.panel {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 32px;
+  animation: arrive 400ms ease-out;
+}
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: 20px;
+}
+.section-heading p {
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.grow {
+  flex: 1;
+  min-width: 180px;
+}
+input,
+select,
+button {
+  font: inherit;
+  border-radius: 4px;
+}
+input:not([type='checkbox']),
+select {
+  width: 100%;
+  border: 1px solid #bcbfba;
+  background: #fff;
+  color: inherit;
+  padding: 11px 12px;
+  height: 46px;
+  font-size: 15px;
+}
+input.amount {
+  width: 130px;
+}
+button {
+  border: 1px solid transparent;
+  padding: 10px 16px;
+  min-height: 44px;
+  background: #222823;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover {
+  background: #39443a;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+:focus-visible {
+  outline: 3px solid #4d7654;
+  outline-offset: 3px;
+}
+.filters {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #eaeaea;
+  padding: 24px 0 16px;
+}
+.filters button,
+.quiet {
+  background: transparent;
+  color: #4a504b;
+}
+.filters button[aria-pressed='true'] {
+  background: #edf3ec;
+  color: #346538;
+}
+.filters button:hover,
+.quiet:hover {
+  background: #f3f3f0;
+}
+.items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.items li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #eaeaea;
+  padding: 16px 0;
+}
+.items li:last-child {
+  border-bottom: 0;
+}
+.task-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  font-size: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: #346538;
+}
+.completed {
+  color: #6e736e;
+  text-decoration: line-through;
+}
+strong {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+small {
+  display: block;
+  color: #646b65;
+}
+.money {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.empty {
+  text-align: center;
+  padding: 24px;
+  color: #646b65;
+}
+footer,
+.hint {
+  font-size: 13px;
+  color: #646b65;
+}
+footer {
+  margin-top: 24px;
+}
+[role='alert']:not(:empty) {
+  padding: 16px;
+  background: #fdebec;
+  color: #9f2f2d;
+  margin-top: 20px;
+  border-radius: 4px;
+}
+.quote:not(:empty) {
+  margin-top: 28px;
+  border-top: 1px solid #eaeaea;
+  padding-top: 16px;
+}
+dl {
+  margin: 0;
+}
+dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+}
+dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.total {
+  border-top: 1px solid #eaeaea;
+  margin-top: 12px;
+  font-size: 22px;
+}
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  main {
+    padding: 36px 16px 24px;
+  }
+  .panel {
+    padding: 20px;
+  }
+  .section-heading {
+    display: block;
+  }
+  form > label,
+  form > button {
+    flex: 1 1 100%;
+  }
+  input.amount {
+    width: 100%;
+  }
+  .items li {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .items .grow {
+    min-width: 130px;
+  }
+}

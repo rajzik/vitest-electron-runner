@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws://127.0.0.1:*"
+    />
+    <title>Desk notes</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Your desk / A place to think</p>
+        <h1>Pick up where<br />you left off.</h1>
+        <p>A scratchpad for the thought you don't want to lose.</p>
+      </header>
+      <section class="panel" aria-label="Notebook">
+        <form>
+          <label for="note">Your note</label>
+          <textarea
+            id="note"
+            maxlength="20000"
+            placeholder="Start with one thought…"
+            disabled
+          ></textarea>
+          <div class="actions">
+            <p role="status">Loading your note…</p>
+            <button type="submit" disabled>Save note</button>
+          </div>
+          <p role="alert"></p>
+        </form>
+      </section>
+      <footer>Saved on this computer. Your note stays here after you close the app.</footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

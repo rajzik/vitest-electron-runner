@@ -6,3 +6,7 @@ coverage/
 .vp/
 *.tsbuildinfo
 .DS_Store
+
+.pnpm-store/
+**/test/.run-*/
+*.tgz

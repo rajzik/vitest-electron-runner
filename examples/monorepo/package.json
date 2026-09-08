@@ -1,0 +1,17 @@
+{
+  "name": "@examples/monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "dev": "node scripts/start.mjs --dev",
+    "test": "pnpm --filter vitest-electron-runner build && vitest run",
+    "test:watch": "pnpm --filter vitest-electron-runner build && vitest"
+  },
+  "devDependencies": {
+    "electron": "44.2.0",
+    "vite": "8.2.2",
+    "vitest": "5.0.0",
+    "vitest-electron-runner": "workspace:*"
+  }
+}

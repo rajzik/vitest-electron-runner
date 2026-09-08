@@ -1,11 +1,13 @@
 packages:
   - packages/*
+  - examples/*
+  - examples/monorepo/packages/*
 
 overrides:
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.0
-  vitest: 4.1.11
+  vite-plus>vite: npm:@voidzero-dev/vite-plus-core@0.3.0
 
 allowBuilds:
+  electron: true
   vite-plus: true
 
 # The Vite Plus core alias uses the Vite Plus version rather than Vite's version.

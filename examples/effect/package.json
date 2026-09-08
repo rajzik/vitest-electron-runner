@@ -1,0 +1,25 @@
+{
+  "name": "@examples/effect",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test": "pnpm --filter vitest-electron-runner build && vitest run",
+    "test:watch": "pnpm --filter vitest-electron-runner build && vitest"
+  },
+  "dependencies": {
+    "effect": "3.22.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/user-event": "14.6.7",
+    "electron": "44.2.0",
+    "vite": "8.2.2",
+    "vite-plus": "0.3.0",
+    "vitest": "5.0.0",
+    "vitest-electron-runner": "workspace:*"
+  }
+}
