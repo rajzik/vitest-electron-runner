@@ -1,0 +1,44 @@
+{
+  "name": "vitest-electron-runner",
+  "version": "0.1.0",
+  "description": "Run Vitest tests in real Electron main and renderer processes",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CONTEXT.md"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/copy-assets.mjs",
+    "test": "pnpm build && node --test --test-concurrency=1 test/*.test.mjs",
+    "check": "tsc --noEmit",
+    "prepack": "pnpm build"
+  },
+  "engines": {
+    "node": "^22.15.0 || ^24.0.0 || >=26.0.0"
+  },
+  "peerDependencies": {
+    "electron": ">=44.2.0 <45",
+    "vitest": "5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "electron": "44.2.0",
+    "typescript": "~5.9.3",
+    "vitest": "5.0.0"
+  },
+  "dependencies": {
+    "@ungap/structured-clone": "1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajzik/vitest-electron-runner.git"
+  }
+}
