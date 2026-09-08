@@ -1,5 +1,12 @@
 node_modules/
 dist/
-*.tgz
+coverage/
+.vite/
+.vite-plus/
+.vp/
+*.tsbuildinfo
+.DS_Store
+
 .pnpm-store/
-test/.run-*/
+**/test/.run-*/
+*.tgz

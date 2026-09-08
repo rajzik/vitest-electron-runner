@@ -1,3 +1,14 @@
+packages:
+  - packages/*
+
+overrides:
+  vite-plus>vite: npm:@voidzero-dev/vite-plus-core@0.3.0
+
 allowBuilds:
+  vite-plus: true
   electron: true
-  esbuild: true
+
+# The Vite Plus core alias uses the Vite Plus version rather than Vite's version.
+peerDependencyRules:
+  allowedVersions:
+    vite: '0.3.0'
