@@ -19,7 +19,7 @@
     }
   },
   "scripts": {
-    "build": "vp pack && node scripts/copy-assets.mjs",
+    "build": "vp pack",
     "dev": "vp pack --watch",
     "test": "pnpm build && node --test --test-concurrency=1 test/*.test.mjs",
     "test:watch": "node --test --watch --test-concurrency=1 test/*.test.mjs",

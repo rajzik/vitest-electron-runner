@@ -86,7 +86,7 @@ test('uses the page DOM and renderer APIs', () => {
 ```
 
 Renderer tests run in a hidden local page with `nodeIntegration: true`,
-`contextIsolation: false`, and `sandbox: false`. The CommonJS preload initializes
+`contextIsolation: false`, and `sandbox: false`. The preload, compiled from TypeScript to CommonJS, initializes
 Vitest after the DOM loads. Tests execute in the page's own JavaScript context.
 
 Use this mode for trusted test code. It does not emulate a production sandbox
@@ -151,6 +151,14 @@ Node `execArgv` options are not forwarded to the Electron executable. Pre-ready
 Electron configuration, production-style renderer contexts, coverage providers,
 and Vitest's experimental native module runner are outside the verified support
 scope. Electron requires a graphical session; Linux CI can use `xvfb-run -a pnpm test`.
+
+## Build formats
+
+All runtime sources are TypeScript. Vite Plus emits the public entry point as
+ESM (`index.mjs`) and the Electron main bootstrap and renderer preload as
+CommonJS (`bootstrap.cjs` and `preload.cjs`), with their shared runtime chunk
+and source maps. The renderer HTML is copied by the same build configuration,
+including in watch mode.
 
 ## Development and verification
 
