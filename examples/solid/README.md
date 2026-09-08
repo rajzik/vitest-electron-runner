@@ -13,6 +13,7 @@ pnpm --filter @examples/solid build
 pnpm --filter @examples/solid preview
 ```
 
-Open the URL printed by the dev or preview server. Tests run in headless Chromium.
-This app uses Vitest Browser Mode directly; it does not use the Electron custom pool.
-See [the examples guide](../README.md) for architecture and test coverage.
+Open the URL printed by the dev or preview server. Tests build the local core
+library and run in its hidden Electron renderer pool using Vitest 5. They use
+DOM Testing Library rather than a Playwright browser provider.
+See [the examples guide](../README.md) for configuration and coverage.

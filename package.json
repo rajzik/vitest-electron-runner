@@ -7,14 +7,15 @@
     "dev": "vp run -r --parallel dev",
     "check": "vp check",
     "fmt": "vp fmt",
-    "test": "pnpm --filter vitest-electron-runner test && vp test run",
-    "test:watch": "vp run -r --parallel test:watch"
+    "test": "pnpm --filter vitest-electron-runner test && vitest run",
+    "test:watch": "pnpm --filter vitest-electron-runner build && vitest"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
     "typescript": "6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
-    "vite-plus": "0.3.0"
+    "vite": "8.2.2",
+    "vite-plus": "0.3.0",
+    "vitest": "5.0.0"
   },
   "engines": {
     "node": ">=24.11.0"

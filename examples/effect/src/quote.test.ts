@@ -1,5 +1,5 @@
 import { Effect, Either, Layer } from 'effect';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { Inventory, quoteOrder } from './quote';
 
 const inventory = Layer.succeed(Inventory, { available: 20, unitPriceCents: 1000 });

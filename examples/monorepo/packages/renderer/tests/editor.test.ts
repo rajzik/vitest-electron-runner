@@ -1,21 +1,65 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { expect, test } from 'vite-plus/test';
-import { close, directory, launch } from '../../../testing/electron.js';
+import { afterEach, expect, test } from 'vitest';
+import { screen, waitFor } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/vitest';
+import html from '../index.html?raw';
+import { mountEditor } from '../src/editor';
+import type { NotesApi } from '@split/contracts';
 
-test('saves through preload IPC and restores the note after restarting Electron', async () => {
-  const page = await launch();
-  expect(await page.getByRole('textbox').inputValue()).toBe('');
-  const note = 'Sketch the next release.\nKeep the main and renderer separate.';
-  await page.getByRole('textbox').fill(note);
-  await page.getByRole('button', { name: 'Save note' }).click();
-  await page.getByRole('status').filter({ hasText: 'Saved on this computer' }).waitFor();
-  expect(await readFile(join(directory, 'desk-note.txt'), 'utf8')).toBe(note);
-  await close();
-  const reopened = await launch();
-  expect(await reopened.getByRole('textbox').inputValue()).toBe(note);
-  await reopened.getByRole('textbox').fill('');
-  await reopened.getByRole('button', { name: 'Save note' }).click();
-  await reopened.getByRole('status').filter({ hasText: 'Saved on this computer' }).waitFor();
-  expect(await readFile(join(directory, 'desk-note.txt'), 'utf8')).toBe('');
+let dispose: (() => void) | undefined;
+afterEach(() => {
+  dispose?.();
+  document.body.replaceChildren();
+});
+async function mount(notes: NotesApi) {
+  document.body.innerHTML = new DOMParser().parseFromString(html, 'text/html').body.innerHTML;
+  dispose = await mountEditor(document, notes);
+  return userEvent.setup();
+}
+
+test('loads, edits, saves, and clears a note through the editor', async () => {
+  let saved = 'Yesterday’s idea';
+  const user = await mount({
+    load: async () => saved,
+    save: async (text) => {
+      saved = text;
+    },
+  });
+  const editor = screen.getByRole('textbox', { name: 'Your note' });
+  expect(editor).toHaveValue('Yesterday’s idea');
+  await user.clear(editor);
+  await user.type(editor, 'Ship the next release');
+  expect(screen.getByRole('status')).toHaveTextContent('Unsaved changes');
+  await user.click(screen.getByRole('button', { name: 'Save note' }));
+  await waitFor(() =>
+    expect(screen.getByRole('status')).toHaveTextContent('Saved on this computer'),
+  );
+  expect(saved).toBe('Ship the next release');
+  await user.clear(editor);
+  await user.click(screen.getByRole('button', { name: 'Save note' }));
+  await waitFor(() => expect(saved).toBe(''));
+});
+
+test('keeps edits after a failed save and allows retrying', async () => {
+  let fail = true;
+  let saved = '';
+  const user = await mount({
+    load: async () => '',
+    save: async (text) => {
+      if (fail) throw new Error('Disk full');
+      saved = text;
+    },
+  });
+  await user.type(screen.getByRole('textbox'), 'Keep this thought');
+  await user.click(screen.getByRole('button'));
+  await waitFor(() =>
+    expect(screen.getByRole('alert')).toHaveTextContent('Could not save your note'),
+  );
+  expect(screen.getByRole('textbox')).toHaveValue('Keep this thought');
+  fail = false;
+  await user.click(screen.getByRole('button'));
+  await waitFor(() =>
+    expect(screen.getByRole('status')).toHaveTextContent('Saved on this computer'),
+  );
+  expect(saved).toBe('Keep this thought');
 });

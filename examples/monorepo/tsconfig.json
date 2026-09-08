@@ -3,5 +3,5 @@
   "compilerOptions": {
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["testing", "vite.config.ts", "packages/renderer/src/env.d.ts"]
+  "include": ["testing", "vitest.config.ts", "packages/renderer/src/env.d.ts"]
 }

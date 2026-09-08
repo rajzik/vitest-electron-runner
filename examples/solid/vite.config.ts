@@ -1,18 +1,3 @@
-import { defineConfig } from 'vite-plus';
-import { playwright } from 'vite-plus/test/browser-playwright';
+import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
-
-export default defineConfig({
-  plugins: [solid()],
-  test: {
-    name: 'solid',
-    environment: 'node',
-    include: ['src/**/*.test.{ts,tsx}'],
-    browser: {
-      enabled: true,
-      headless: true,
-      provider: playwright(),
-      instances: [{ browser: 'chromium' }],
-    },
-  },
-});
+export default defineConfig({ plugins: [solid({ ssr: false })] });

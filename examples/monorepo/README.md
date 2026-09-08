@@ -7,12 +7,12 @@ A desktop scratchpad with separate main and renderer packages. Notes are saved t
 monorepo/
   packages/
     main/          Electron lifecycle, file storage, IPC handlers, preload
-      tests/       IPC validation and renderer isolation
+      tests/       File persistence, IPC validation, renderer isolation
     renderer/      Vite app, editor, browser-only TypeScript
-      tests/       Editor save, clear, and reopen workflow
+      tests/       Editor save, clear, and error recovery
     contracts/     NotesApi type shared by preload and renderer
   scripts/         Build and launch both processes
-  testing/         Shared Electron fixture and build setup
+  testing/         Production-asset build setup for tests
 ```
 
 These packages belong to the repository's existing pnpm workspace. The root
@@ -77,33 +77,30 @@ pnpm --filter @split/main test
 pnpm --filter @split/renderer test
 ```
 
-The tests build both packages automatically and launch real Electron with
-Playwright from two Node Vitest projects. Test files live in each package's
-`tests/` directory. The example-level config runs both projects; package test
-commands select only their own project. Shared setup builds the app once before
-the selected projects run. They verify a renderer-to-preload-to-main
-save, the actual file contents, restoration after restarting Electron, clearing a
-note, isolation from Node, and rejection of oversized IPC requests.
+Each test command builds the workspace runner. The test setup builds main/preload
+and renderer assets, then Vitest 5 starts the selected core-library pools:
 
-Each test gets a temporary data directory, removed after Electron exits. The
-`ELECTRON_EXAMPLE_DATA_DIR` environment variable selects this directory; normal
-launches use Electron's user-data directory. Launchers remove an inherited
-`ELECTRON_RUN_AS_NODE` flag so Electron opens as a desktop app.
+- `packages/main/tests` uses `electronPool({ process: 'main' })`. It calls the same
+  `openNotebook` function as the app, opens the production sandboxed renderer,
+  exercises the actual preload and IPC handlers, checks disk contents, and verifies
+  restoration after closing and reopening the window.
+- `packages/renderer/tests` uses `electronPool({ process: 'renderer' })`. It mounts
+  the production editor with an in-memory `NotesApi` to test save, clear, failure,
+  and retry behavior. It does not load the production preload into the pool page.
 
-Root `pnpm test` includes these tests. Test windows are hidden and cannot take
-focus; the app also stays out of the macOS Dock and the Windows taskbar. Visibility is controlled by the main process itself, including for `dev` and
-`start`. To watch a test for debugging:
+The core library owns Electron startup, hidden windows, test transport, and process
+cleanup. The main tests store notes under the pool's temporary user-data directory,
+which the runner removes after the file finishes. The old Playwright launcher and
+process-restart test are removed; persistence is verified by opening a fresh
+production window against the same file in the main pool.
+
+The app and pool windows are hidden by default. To show a renderer test window:
 
 ```sh
-ELECTRON_EXAMPLE_SHOW_WINDOW=1 pnpm --filter @examples/monorepo test
+ELECTRON_EXAMPLE_SHOW_WINDOW=1 pnpm --filter @split/renderer test
 ```
 
-These are real Electron processes with hidden windows, not headless Chromium. On Linux CI run
-under a virtual display such as `xvfb-run -a pnpm test` and install Electron's system
-libraries. No separately installed Chromium is needed for this example, though the
-other examples still require Playwright Chromium.
-
-The repository's `vitest-electron-runner` package tests code in its own Electron
-processes. This example instead tests its application and production preload
-bridge end to end. These tests use [Playwright's Electron support](https://playwright.dev/docs/api/class-electron)
-directly and do not import that runner.
+The configs translate this to the core library's `showWindow` option. Main tests
+keep their own production windows hidden. Linux CI needs Electron's system libraries
+and a graphical session, for example `xvfb-run -a pnpm test`. There is no Playwright
+or separate Chromium installation.
